@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상상 · AI 영상/디자인 크리에이터 이미숙</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
+<style>
+  :root{
+    --bg:#14110D;
+    --surface:#1F1B15;
+    --surface-2:#282217;
+    --ink:#F4EEE3;
+    --ink-dim:#C9BEAE;
+    --red:#B3402A;
+    --red-dim:#8C3320;
+    --green:#445E42;
+    --green-dim:#354A34;
+    --gold:#8C7350;
+    --line:#7C6A52;
+    --serif: 'Nanum Myeongjo','Noto Serif KR',Georgia,'Times New Roman',serif;
+    --sans: 'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;
+    --display: 'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+  section{position:relative;padding:96px 24px;}
+  .wrap{max-width:1080px;margin:0 auto;}
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--red);
+    margin:0 0 18px;
+    font-weight:600;
+  }
+  h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;}
+  h2{font-size:clamp(26px,4vw,40px);letter-spacing:.01em;}
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .section-head p{color:var(--ink-dim);margin-top:14px;font-size:16px;}
+
+  /* film grain overlay */
+  .grain{
+    position:fixed;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;z-index:5;
+  }
+
+  /* 금가루 마법 커서 효과 캔버스 */
+  #magicCanvas{
+    position:fixed;inset:0;z-index:55;pointer-events:none;
+  }
+
+  /* top bar */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 6vw;
+    background:linear-gradient(180deg,rgba(9,8,6,.75),rgba(9,8,6,.15) 80%,transparent);
+    border-bottom:1px solid rgba(244,238,227,.14);
+  }
+  .brand-word{
+    font-family:var(--display);font-size:19px;font-weight:800;
+    letter-spacing:.14em;color:var(--ink);white-space:nowrap;
+  }
+  .toplinks{display:none;align-items:center;gap:34px;}
+  .toplinks a{
+    color:var(--ink);text-decoration:none;font-size:12.5px;letter-spacing:.14em;
+    font-weight:600;text-transform:uppercase;transition:opacity .2s;opacity:.9;
+  }
+  .toplinks a:hover{opacity:1;}
+  @media(min-width:640px){.toplinks{display:flex;}}
+
+  .btn{
+    display:inline-block;
+    background:var(--red);
+    color:var(--ink);
+    border:1px solid var(--red);
+    padding:15px 30px;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-decoration:none;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background .25s ease,transform .25s ease,border-color .25s ease;
+  }
+  .btn:hover{background:var(--red-dim);border-color:var(--red-dim);transform:translateY(-1px);}
+  .btn-outline{
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+  }
+  .btn-outline:hover{border-color:var(--ink);background:rgba(244,238,227,.05);}
+
+  /* chapter side-nav (desktop only) */
+  .chapternav{
+    position:fixed;right:22px;top:50%;transform:translateY(-50%);
+    z-index:40;display:none;flex-direction:column;gap:16px;
+  }
+  .chapternav a{
+    position:relative;width:9px;height:9px;border-radius:50%;
+    background:var(--line);opacity:.6;transition:opacity .2s,background .2s;
+  }
+  .chapternav a:hover,.chapternav a.active{background:var(--red);opacity:1;}
+  .chapternav a .tip{
+    position:absolute;right:20px;top:50%;transform:translateY(-50%);
+    white-space:nowrap;font-size:11px;letter-spacing:.05em;color:var(--ink-dim);
+    opacity:0;pointer-events:none;transition:opacity .2s;
+  }
+  .chapternav a:hover .tip{opacity:1;}
+  @media(min-width:1024px){.chapternav{display:flex;}}
+
+  /* sound toggle */
+  .soundtoggle{
+    position:fixed;right:22px;bottom:22px;z-index:50;
+    width:46px;height:46px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .soundtoggle svg{width:20px;height:20px;stroke:var(--ink);}
+  .soundtoggle[aria-pressed="true"] .icon-off{display:none;}
+  .soundtoggle[aria-pressed="false"] .icon-on{display:none;}
+
+  /* HERO — 미술관 전시홀 무드의 레이어드 씬 (실사진 대신 CSS 라이트/컬러로 구현) */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;align-items:center;
+    padding:130px 6vw 90px;
+    overflow:hidden;
+    background:#0B0A08;
+    text-align:left;
+  }
+  .hero-scene{
+    position:absolute;inset:-3%;z-index:0;
+    transition:transform .5s cubic-bezier(.2,.6,.2,1);
+    will-change:transform;
+  }
+  .hero-photo{
+    position:absolute;inset:0;
+    background-image:url('images/hero_gallery.jpg');
+    background-size:cover;
+    background-position:62% 32%;
+  }
+  .hero-photo-overlay{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(90deg, rgba(9,8,6,.96) 0%, rgba(9,8,6,.82) 26%, rgba(9,8,6,.35) 52%, rgba(9,8,6,.05) 72%),
+      linear-gradient(0deg, rgba(9,8,6,.9) 0%, rgba(9,8,6,.15) 22%, rgba(9,8,6,0) 45%);
+  }
+  .hero-particles span{
+    position:absolute;width:5px;height:5px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
+    opacity:.55;animation:drift 7s ease-in-out infinite;
+  }
+  .hero-vignette{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse at 22% 40%, transparent 34%, rgba(9,8,6,.5) 92%);
+  }
+  @keyframes drift{
+    0%,100%{transform:translateY(0) translateX(0);opacity:.35;}
+    50%{transform:translateY(-16px) translateX(6px);opacity:.85;}
+  }
+  .hero-inner{position:relative;z-index:2;max-width:600px;}
+  .hero h1{
+    font-family:var(--display);font-weight:800;
+    font-size:clamp(32px,5.4vw,54px);line-height:1.32;letter-spacing:-.01em;
+  }
+  .hero h1 .accent{color:var(--red);}
+  .hero .role{
+    margin-top:22px;color:var(--ink-dim);font-size:16px;letter-spacing:.01em;max-width:480px;
+  }
+  .hero .role strong{color:var(--ink);font-weight:600;}
+  .hero .cta-row{margin-top:40px;display:flex;justify-content:flex-start;gap:16px;flex-wrap:wrap;}
+  .hero .cta-row .btn{
+    border-radius:999px;padding:14px 30px;background:transparent;
+  }
+  .hero .cta-row .btn-accent{border:1px solid var(--red);color:var(--red);}
+  .hero .cta-row .btn-accent:hover{background:rgba(179,64,42,.14);border-color:var(--red);}
+  .hero .cta-row .btn-outline{border:1px solid rgba(244,238,227,.4);color:var(--ink);}
+  .hero .cta-row .btn-outline:hover{border-color:var(--ink);background:rgba(244,238,227,.06);}
+  .hero-meta{
+    position:absolute;left:6vw;right:6vw;bottom:26px;z-index:2;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;
+    font-size:12px;color:var(--ink-dim);letter-spacing:.03em;
+  }
+  @media(max-width:720px){
+    .hero{text-align:left;padding-top:150px;}
+    .hero-photo{background-position:68% 28%;}
+    .hero-photo-overlay{
+      background:
+        linear-gradient(0deg, rgba(9,8,6,.97) 0%, rgba(9,8,6,.55) 40%, rgba(9,8,6,.25) 65%, rgba(9,8,6,.15) 100%),
+        linear-gradient(90deg, rgba(9,8,6,.75) 0%, rgba(9,8,6,.15) 70%);
+    }
+  }
+  @media(prefers-reduced-motion:reduce){
+    .hero-particles span{animation:none;}
+    .hero-scene{transition:none;}
+  }
+
+  /* PAIN */
+  .pain{background:var(--surface);}
+  .pain blockquote{
+    font-family:var(--serif);font-style:italic;
+    font-size:clamp(20px,2.6vw,28px);line-height:1.6;
+    max-width:760px;margin:0 auto;text-align:center;color:var(--ink);
+    position:relative;padding:0 20px;
+  }
+  .pain blockquote::before{content:"“";color:var(--red);font-size:1.4em;margin-right:2px;}
+  .pain blockquote::after{content:"”";color:var(--red);font-size:1.4em;margin-left:2px;}
+  .pain-frags{
+    margin-top:56px;display:grid;gap:20px;grid-template-columns:1fr;
+  }
+  @media(min-width:768px){.pain-frags{grid-template-columns:repeat(3,1fr);}}
+  .frag{
+    border:1px solid var(--line);padding:26px 22px;border-radius:2px;
+    background:var(--surface-2);
+  }
+  .frag .num{font-family:var(--serif);color:var(--red);font-size:13px;letter-spacing:.1em;}
+  .frag h3{font-size:17px;margin-top:10px;}
+  .frag p{color:var(--ink-dim);font-size:14px;margin:10px 0 0;}
+
+  /* INTRO / USP */
+  .intro-grid{
+    display:grid;gap:40px;grid-template-columns:1fr;align-items:stretch;
+  }
+  @media(min-width:860px){.intro-grid{grid-template-columns:1fr 1fr;}}
+  .frame{
+    border:1px solid var(--line);padding:3px;position:relative;
+  }
+  .frame-inner{
+    border:1px solid var(--line);padding:38px 32px;height:100%;
+    background:var(--surface);
+  }
+  .frame-inner .tag{color:var(--red);font-size:12px;letter-spacing:.2em;text-transform:uppercase;}
+  .frame-inner p.big{
+    font-family:var(--serif);font-size:clamp(19px,2.2vw,23px);line-height:1.55;margin-top:16px;
+  }
+  .colorblock{
+    position:absolute;inset:-14px -14px auto auto;width:64px;height:64px;
+    background:linear-gradient(135deg,var(--red),var(--green));
+    opacity:.85;z-index:-1;
+  }
+
+  /* THRESHOLD — 문 안에 또 다른 문이 있는 느낌의 중첩 프레임 */
+  .threshold{background:var(--bg);}
+  .threshold-wrap{
+    display:flex;flex-direction:column-reverse;align-items:center;gap:52px;text-align:center;
+  }
+  @media(min-width:860px){
+    .threshold-wrap{flex-direction:row;text-align:left;justify-content:space-between;}
+  }
+  .threshold-text{max-width:440px;}
+  .threshold-text a{margin-top:26px;display:inline-block;}
+  .threshold-frame{
+    width:220px;height:220px;position:relative;flex-shrink:0;
+  }
+  .tf{position:absolute;border:1px solid var(--line);transition:inset .5s ease, opacity .5s ease;}
+  .tf-1{inset:0;opacity:.45;}
+  .tf-2{inset:26px;opacity:.65;}
+  .tf-3{inset:52px;opacity:.9;}
+  .tf-door{
+    position:absolute;inset:78px;
+    background:linear-gradient(160deg,var(--red),var(--red-dim));
+    box-shadow:0 0 40px rgba(179,64,42,.35);
+    transition:transform .5s ease, box-shadow .5s ease;
+  }
+  .threshold-frame:hover .tf-1{inset:-6px;}
+  .threshold-frame:hover .tf-2{inset:20px;}
+  .threshold-frame:hover .tf-3{inset:46px;}
+  .threshold-frame:hover .tf-door{transform:scale(1.06);box-shadow:0 0 60px rgba(179,64,42,.5);}
+
+  /* scroll-reveal 유틸 */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.is-visible{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .tf,.tf-door{transition:none;}
+  }
+
+  /* CHAPTERS */
+  .chapters{background:var(--surface);}
+  .chapter-grid{
+    display:grid;gap:34px;grid-template-columns:1fr;
+  }
+  @media(min-width:768px){.chapter-grid{grid-template-columns:repeat(3,1fr);}}
+  .chapter-card{
+    perspective:1400px;height:360px;position:relative;
+  }
+  .chapter-back{
+    position:absolute;inset:0;border:1px solid var(--line);
+    background:var(--surface-2);
+    padding:26px;display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .chapter-back .kicker{font-size:11px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;}
+  .chapter-back h3{font-size:20px;margin-top:8px;}
+  .chapter-back p{font-size:13.5px;color:var(--ink-dim);margin-top:10px;}
+  .chapter-door{
+    position:absolute;inset:0;
+    transform-origin:left center;
+    transition:transform .7s cubic-bezier(.6,.05,.25,1);
+    border:1px solid rgba(0,0,0,.35);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;
+    box-shadow:inset 0 0 0 10px rgba(20,17,13,.18);
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+  }
+  .chapter-door .frame-line{
+    position:absolute;inset:14px;border:1px solid rgba(244,238,227,.35);
+  }
+  .chapter-door .frame-line::after{
+    content:"";position:absolute;inset:12px;border:1px solid rgba(244,238,227,.2);
+  }
+  .chapter-door .num{
+    font-family:var(--serif);font-size:13px;letter-spacing:.25em;color:rgba(244,238,227,.85);
+  }
+  .chapter-door h3{
+    color:#fff;font-size:19px;margin-top:10px;padding:0 18px;text-align:center;
+  }
+  .chapter-door .hint{
+    margin-top:18px;font-size:11px;letter-spacing:.15em;color:rgba(244,238,227,.7);
+    text-transform:uppercase;
+  }
+  .door-red{background:linear-gradient(160deg,#C24A32,#8C3320);}
+  .door-green{background:linear-gradient(160deg,#526E50,#354A34);}
+  .door-gold{background:linear-gradient(160deg,#A08560,#6E5A3E);}
+  .chapter-card.is-open .chapter-door{transform:rotateY(-100deg);}
+  @media(prefers-reduced-motion:reduce){.chapter-door{transition:none;}}
+  .chapters-note{
+    margin-top:36px;font-size:13px;color:var(--ink-dim);text-align:center;
+  }
+
+  /* TRUST */
+  .trust-grid{
+    display:grid;gap:32px;grid-template-columns:1fr;margin-top:10px;
+  }
+  @media(min-width:768px){.trust-grid{grid-template-columns:repeat(3,1fr);}}
+  .trust-item{text-align:center;padding:0 12px;}
+  .trust-item .circle{
+    width:56px;height:56px;border-radius:50%;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+    font-family:var(--serif);color:var(--red);
+  }
+  .trust-item p{color:var(--ink-dim);font-size:14.5px;margin-top:8px;}
+  .trust-cta{text-align:center;margin-top:60px;}
+
+  /* CONTACT */
+  .contact{background:var(--surface);}
+  form{max-width:560px;margin:0 auto;display:grid;gap:18px;}
+  label{font-size:13px;color:var(--ink-dim);display:block;margin-bottom:7px;}
+  input,textarea{
+    width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);
+    padding:13px 14px;font-size:15px;font-family:var(--sans);border-radius:2px;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--red);}
+  textarea{resize:vertical;min-height:120px;}
+  form .submit-row{margin-top:8px;}
+  .form-msg{
+    margin-top:16px;font-size:14px;color:var(--green);display:none;
+  }
+  .form-msg.show{display:block;}
+
+  footer{
+    padding:48px 24px;text-align:center;border-top:1px solid var(--line);
+  }
+  footer .brand-word{margin-bottom:10px;}
+  footer p{color:var(--ink-dim);font-size:13px;margin:4px 0;}
+
+  @media(max-width:600px){
+    section{padding:72px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="grain" aria-hidden="true">
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+
+<canvas id="magicCanvas" aria-hidden="true"></canvas>
+
+<header class="topbar">
+  <div class="brand-word">SANG SANG AI</div>
+  <nav class="toplinks" aria-label="주요 섹션 이동">
+    <a href="#intro">ABOUT</a>
+    <a href="#chapters">WORKS</a>
+    <a href="#trust">ARCHIVE</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+</header>
+
+<nav class="chapternav" aria-label="페이지 챕터 내비게이션">
+  <a href="#hero"><span class="tip">처음</span></a>
+  <a href="#threshold"><span class="tip">The Foyer</span></a>
+  <a href="#pain"><span class="tip">Ch.1 · 고민</span></a>
+  <a href="#intro"><span class="tip">Ch.2 · 소개</span></a>
+  <a href="#chapters"><span class="tip">Ch.3 · 작품</span></a>
+  <a href="#trust"><span class="tip">Ch.4 · 신뢰</span></a>
+  <a href="#contact"><span class="tip">Ch.5 · 문의</span></a>
+</nav>
+
+<button class="soundtoggle" id="soundToggle" type="button" aria-pressed="false" aria-label="배경음 켜기/끄기">
+  <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+  <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><line x1="17" y1="8" x2="23" y2="14"/><line x1="23" y1="8" x2="17" y2="14"/></svg>
+</button>
+<!-- 실제 배경음 파일이 준비되면 아래 audio 태그의 src만 교체하면 재생됩니다. -->
+<audio id="bgm" loop preload="none"><!-- <source src="여기에-오디오-파일-경로.mp3" type="audio/mpeg"> --></audio>
+
+<section class="hero" id="hero">
+  <div class="hero-scene" aria-hidden="true">
+    <div class="hero-photo"></div>
+    <div class="hero-photo-overlay"></div>
+    <div class="hero-particles">
+      <span style="left:58%;top:22%;animation-delay:.2s;"></span>
+      <span style="left:66%;top:48%;animation-delay:1.4s;"></span>
+      <span style="left:78%;top:30%;animation-delay:2.1s;"></span>
+      <span style="left:72%;top:64%;animation-delay:.8s;"></span>
+      <span style="left:88%;top:52%;animation-delay:3s;"></span>
+    </div>
+    <div class="hero-vignette"></div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="eyebrow">AI FILM · VISUAL · MEDIA ART</p>
+    <h1>상상은 장면이 되고,<br>기술은 <span class="accent">예술</span>이 됩니다.</h1>
+    <p class="role">영화에서 브랜드 영상, 광고와 미디어아트까지<br>다양한 매체를 하나의 시각 언어로 연결합니다.</p>
+    <div class="cta-row">
+      <a href="#chapters" class="btn btn-accent">대표 작품 보기</a>
+      <a href="#contact" class="btn btn-outline">프로젝트 문의</a>
+    </div>
+  </div>
+
+  <div class="hero-meta">
+    <span>이미숙 · AI 감독 / 뉴미디어 아티스트 / 비주얼 크리에이터</span>
+    <span class="hint">마우스를 움직여 전시를 경험해보세요</span>
+  </div>
+</section>
+
+<section class="threshold" id="threshold">
+  <div class="wrap threshold-wrap">
+    <div class="threshold-frame reveal" aria-hidden="true">
+      <div class="tf tf-1"></div>
+      <div class="tf tf-2"></div>
+      <div class="tf tf-3"></div>
+      <div class="tf-door"></div>
+    </div>
+    <div class="threshold-text reveal">
+      <p class="eyebrow">Chapter 0 · The Foyer</p>
+      <h2>문을 열면, 또 다른 이야기가 있습니다</h2>
+      <p style="color:var(--ink-dim);margin-top:14px;">지역의 설화와 역사가 잠들어 있던 자리마다, 상상은 새로운 문을 엽니다. 그 안에 어떤 장면이 있는지는, 열어봐야 압니다.</p>
+      <a href="#chapters" class="btn btn-outline">안으로 들어가기 →</a>
+    </div>
+  </div>
+</section>
+
+<section class="pain" id="pain">
+  <div class="wrap">
+    <p class="eyebrow" style="text-align:center;">이런 고민, 있으신가요</p>
+    <blockquote>
+      공연 무대 뒤에 관객과 소통하는 몰입감 넘치는 인터랙티브 영상 배경을 띄우고 싶고, 내 원작 예술 작품을 AI 미디어아트로 확장해보고 싶은데… 기술도 어렵고 제작비도 너무 비싸서 엄두가 안 나요.
+    </blockquote>
+    <div class="pain-frags">
+      <div class="frag">
+        <div class="num">01</div>
+        <h3>기술 장벽</h3>
+        <p>AI 영상 제작, 어디서부터 시작해야 할지 막막함</p>
+      </div>
+      <div class="frag">
+        <div class="num">02</div>
+        <h3>예산 부담</h3>
+        <p>실사 촬영·전문 스튜디오 제작 비용을 감당하기 어려움</p>
+      </div>
+      <div class="frag">
+        <div class="num">03</div>
+        <h3>잊혀지는 지역 콘텐츠</h3>
+        <p>설화·역사 자료는 있지만 영상화할 방법이 없어 그대로 묻힘</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="intro">
+  <div class="wrap">
+    <div class="intro-grid">
+      <div class="frame">
+        <div class="colorblock" aria-hidden="true"></div>
+        <div class="frame-inner">
+          <p class="tag">한 줄 소개</p>
+          <p class="big">적은 예산으로도 영화 같은 로컬 설화·역사 아카이빙 영상을 완성해, 지자체 및 문화재단 실무자의 콘텐츠 홍보 고민을 해결합니다.</p>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+          <p class="tag">차별점 · USP</p>
+          <p class="big">AI 영화제 수상 및 시네마틱 연출력으로, 실사 촬영 없이도 잊혀진 지역 역사와 설화를 한 편의 영화처럼 생생하게 구현합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapters" id="chapters">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Portfolio</p>
+      <h2>챕터로 열어보는 작업들</h2>
+      <p>문을 눌러 각 챕터를 열어보세요. 실제 작업 스틸컷은 각 문 뒤 자리에 교체해 넣으시면 됩니다.</p>
+    </div>
+    <div class="chapter-grid">
+      <div class="chapter-card">
+        <div class="chapter-back">
+          <p class="kicker">Chapter 1</p>
+          <h3>잊혀진 설화</h3>
+          <p>구전으로만 남은 지역 설화를, AI 미디어아트로 복원한 시네마틱 아카이빙 영상. (실제 작품 스틸컷 삽입 위치)</p>
+        </div>
+        <div class="chapter-door door-red" tabindex="0" role="button" aria-label="Chapter 1. 잊혀진 설화 열기">
+          <div class="frame-line"></div>
+          <span class="num">CHAPTER 1</span>
+          <h3>잊혀진 설화</h3>
+          <span class="hint">Tap to open</span>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-back">
+          <p class="kicker">Chapter 2</p>
+          <h3>지역의 기억</h3>
+          <p>지자체·문화재단과 함께한 지역 역사 아카이빙 프로젝트. (실제 작품 스틸컷 삽입 위치)</p>
+        </div>
+        <div class="chapter-door door-green" tabindex="0" role="button" aria-label="Chapter 2. 지역의 기억 열기">
+          <div class="frame-line"></div>
+          <span class="num">CHAPTER 2</span>
+          <h3>지역의 기억</h3>
+          <span class="hint">Tap to open</span>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-back">
+          <p class="kicker">Chapter 3</p>
+          <h3>무대 너머</h3>
+          <p>공연 무대 배경을 위한 인터랙티브 영상 미디어아트. (실제 작품 스틸컷 삽입 위치)</p>
+        </div>
+        <div class="chapter-door door-gold" tabindex="0" role="button" aria-label="Chapter 3. 무대 너머 열기">
+          <div class="frame-line"></div>
+          <span class="num">CHAPTER 3</span>
+          <h3>무대 너머</h3>
+          <span class="hint">Tap to open</span>
+        </div>
+      </div>
+    </div>
+    <p class="chapters-note">※ 현재는 팔레트 기반 컬러 블록 placeholder이며, 실제 스틸컷 확보 시 각 챕터의 문·배경 이미지 자리에 교체하시면 됩니다.</p>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Why 상상</p>
+      <h2>왜 '상상'과 함께해야 할까요?</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="circle">①</div>
+        <h3>AI 영화제 수상 이력</h3>
+        <p>AI 영화제 진출 및 수상 이력을 보유하고 있습니다.</p>
+      </div>
+      <div class="trust-item">
+        <div class="circle">②</div>
+        <h3>지역 프로젝트 경험</h3>
+        <p>지역 문화·예술 프로젝트 기획 및 콘텐츠 제작 경험이 있습니다.</p>
+      </div>
+      <div class="trust-item">
+        <div class="circle">③</div>
+        <h3>원스톱 제작 역량</h3>
+        <p>기획·영상·사운드를 아우르는 원스톱 제작이 가능합니다.</p>
+      </div>
+    </div>
+    <div class="trust-cta">
+      <a href="#contact" class="btn">내 작품에 AI 숨결 불어넣기</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Project Inquiry</p>
+      <h2>프로젝트 협업 문의</h2>
+      <p>로컬 AI 영상 제작이 필요하신가요? 아래 양식을 남겨주시면 상담을 도와드립니다.</p>
+    </div>
+    <form id="contactForm">
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="contact-info">연락처 (이메일 또는 전화번호)</label>
+        <input type="text" id="contact-info" name="contact-info" required>
+      </div>
+      <div>
+        <label for="org">소속 (지자체 / 문화재단 등)</label>
+        <input type="text" id="org" name="org">
+      </div>
+      <div>
+        <label for="message">문의 내용</label>
+        <textarea id="message" name="message" required placeholder="어떤 이야기를 영상으로 만들고 싶으신가요?"></textarea>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn">내 작품에 AI 숨결 불어넣기</button>
+      </div>
+      <p class="form-msg" id="formMsg">문의가 접수되었습니다. 빠르게 연락드리겠습니다. (데모 화면입니다 — 실제 전송을 위해서는 폼 연동이 필요합니다)</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-word" style="display:inline-block;">SANG SANG AI</div>
+  <p>AI 영상·디자인 크리에이터 / 이미숙 대표</p>
+  <p>&copy; <span id="year"></span> 상상. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // 챕터 도어 열기/닫기 (클릭 및 키보드 접근 지원)
+  document.querySelectorAll('.chapter-door').forEach(function(door){
+    function toggle(){
+      var card = door.closest('.chapter-card');
+      card.classList.toggle('is-open');
+    }
+    door.addEventListener('click', toggle);
+    door.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+  });
+
+  // 사운드 토글 (실제 오디오 파일 연결 전까지는 상태만 표시)
+  var soundBtn = document.getElementById('soundToggle');
+  var bgm = document.getElementById('bgm');
+  soundBtn.addEventListener('click', function(){
+    var isOn = soundBtn.getAttribute('aria-pressed') === 'true';
+    var next = !isOn;
+    soundBtn.setAttribute('aria-pressed', String(next));
+    try{
+      if(next){ bgm.play && bgm.play().catch(function(){}); }
+      else{ bgm.pause && bgm.pause(); }
+    }catch(e){ /* 오디오 소스가 아직 없을 때는 무시합니다 */ }
+  });
+
+  // 문의 폼 데모 제출 처리 (실 전송 기능은 백엔드/폼 서비스 연동 필요)
+  var form = document.getElementById('contactForm');
+  var msg = document.getElementById('formMsg');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    msg.classList.add('show');
+    form.reset();
+  });
+
+  // 챕터 사이드 내비게이션 활성 표시
+  var navLinks = document.querySelectorAll('.chapternav a');
+  var sections = Array.from(navLinks).map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var pos = window.scrollY + window.innerHeight/2;
+    var activeIndex = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= pos) activeIndex = i;
+    });
+    navLinks.forEach(function(a, i){ a.classList.toggle('active', i === activeIndex); });
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // 히어로 갤러리 씬 패럴랙스 (마우스를 움직이면 조명/패널이 살짝 반응)
+  var heroEl = document.getElementById('hero');
+  var heroScene = heroEl ? heroEl.querySelector('.hero-scene') : null;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(heroEl && heroScene && !reduceMotion){
+    heroEl.addEventListener('mousemove', function(e){
+      var r = heroEl.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      heroScene.style.transform = 'translate(' + (x * -16) + 'px,' + (y * -12) + 'px)';
+    });
+    heroEl.addEventListener('mouseleave', function(){
+      heroScene.style.transform = 'translate(0,0)';
+    });
+  }
+
+  // 스크롤 등장 애니메이션 (threshold 섹션 등 .reveal 요소)
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
+      });
+    }, {threshold:.3});
+    revealEls.forEach(function(el){ io.observe(el); });
+  }else{
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // 금가루 마법 커서 효과 — 마우스가 움직일 때마다 화려한 금빛 반짝임이 폭죽처럼 흩날리다 떨어짐
+  (function(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var canvas = document.getElementById('magicCanvas');
+    if(!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resize(){
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var goldTones = ['#FFF6DA', '#F5E7B0', '#EACB6E', '#E0B84A', '#C9922E'];
+    var lastSpawn = 0;
+    var lastX = null, lastY = null;
+
+    function spawn(x, y, count){
+      for(var i = 0; i < count; i++){
+        var isSparkle = Math.random() < 0.32;
+        particles.push({
+          x: x + (Math.random() - 0.5) * 22,
+          y: y + (Math.random() - 0.5) * 22,
+          vx: (Math.random() - 0.5) * 1.3,
+          vy: Math.random() * 0.5 - 0.25,
+          size: isSparkle ? (Math.random() * 3.6 + 3) : (Math.random() * 2.4 + 1.1),
+          life: 1,
+          decay: Math.random() * 0.009 + 0.007,
+          color: goldTones[Math.floor(Math.random() * goldTones.length)],
+          twinkle: Math.random() * Math.PI * 2,
+          angle: Math.random() * Math.PI,
+          spin: (Math.random() - 0.5) * 0.18,
+          sparkle: isSparkle
+        });
+      }
+      if(particles.length > 420){ particles.splice(0, particles.length - 420); }
+    }
+
+    window.addEventListener('mousemove', function(e){
+      var now = performance.now();
+      if(now - lastSpawn < 12){ return; }
+      lastSpawn = now;
+      // 빠르게 움직일수록 반짝임이 훨씬 더 화려하게 흩뿌려집니다
+      var dist = (lastX === null) ? 0 : Math.hypot(e.clientX - lastX, e.clientY - lastY);
+      lastX = e.clientX; lastY = e.clientY;
+      var count = dist > 70 ? 8 : dist > 30 ? 6 : 4;
+      spawn(e.clientX, e.clientY, count);
+    });
+
+    window.addEventListener('touchmove', function(e){
+      if(!e.touches || !e.touches[0]) return;
+      spawn(e.touches[0].clientX, e.touches[0].clientY, 5);
+    }, {passive: true});
+
+    function tick(){
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.globalCompositeOperation = 'lighter';
+      for(var i = particles.length - 1; i >= 0; i--){
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.014;
+        p.vx *= 0.985;
+        p.twinkle += 0.26;
+        p.angle += p.spin;
+        p.life -= p.decay;
+        if(p.life <= 0){ particles.splice(i, 1); continue; }
+        var alpha = Math.max(p.life, 0) * (0.55 + 0.45 * Math.sin(p.twinkle));
+        var r = p.size * (0.75 + 0.35 * Math.sin(p.twinkle));
+
+        if(p.sparkle){
+          var arm = r * 2.6;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.globalAlpha = alpha;
+          ctx.strokeStyle = p.color;
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = arm;
+          ctx.lineWidth = Math.max(r * 0.22, 0.7);
+          ctx.beginPath();
+          ctx.moveTo(-arm, 0); ctx.lineTo(arm, 0);
+          ctx.moveTo(0, -arm); ctx.lineTo(0, arm);
+          ctx.stroke();
+          ctx.restore();
+        }else{
+          var glowR = r * 3.2;
+          var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
+          grad.addColorStop(0, '#FFFBEA');
+          grad.addColorStop(0.35, p.color);
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
