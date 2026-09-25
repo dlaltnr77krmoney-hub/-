@@ -57,7 +57,7 @@ python server/server.py
 - 사진·영상은 업로드하지 않습니다. 별명·점수·시간과 세션 식별자만 서버에 저장합니다. 실명 입력을 요청하지 않습니다.
 - `app/`만 정적 호스팅하면 **순위 없는 연습 모드**를 사용할 수 있습니다. GitHub Pages만으로 공통 SQLite 순위 서버는 실행되지 않습니다.
 - 공통 순위 공개 운영에는 지속 저장소와 HTTPS가 있는 서버, 백업·운영 점검이 필요합니다. 현재 구현은 체험용이며 경품 경쟁을 위한 부정 참여 방지 시스템은 아닙니다.
-- GitHub에 자료를 올린 것은 공개 사이트 배포 완료를 의미하지 않습니다.
+- [공개 체험판](https://dlaltnr77krmoney-hub.github.io/-/)은 GitHub Pages에서 로그인 없이 열립니다. 이 주소의 체험은 공통 순위가 없는 연습 모드입니다. [A3 전시 포스터](https://dlaltnr77krmoney-hub.github.io/-/exhibition-poster.html)의 QR도 이 주소로 연결됩니다.
 
 ## 검증과 남은 작업
 
@@ -78,6 +78,6 @@ node tools/build-crab.mjs "/path/to/original-crab.glb"
 
 [자료 출처·라이선스](docs/SOURCES.md) · [기획 기록](docs/PROJECT_NOTES.md)
 
-[전시 AR 인식 대상 제안](docs/AR_TARGET_PLAN.md): 사용자가 표시한 전시 구역에 무광 인쇄 표식을 두는 안입니다. [새 솔밭 단면 그림](app/assets/songdo-pine-underground-v2.png)과 [QR을 함께 놓은 A3 시안](app/exhibition-poster.html)을 만들었습니다. 땅속 동물 그림자는 종을 알아보기 어렵게 흐리게 했습니다. QR은 예정 공개 주소가 활성화되기 전에는 열리지 않습니다. 현재 앱에 이미지 추적 기능은 아직 없으므로 시안만 인쇄해도 AR이 실행되지는 않습니다.
+[전시 AR 인식 대상 제안](docs/AR_TARGET_PLAN.md): 사용자가 표시한 전시 구역에 무광 인쇄 표식을 두는 안입니다. [새 솔밭 단면 그림](app/assets/songdo-pine-underground-v2.png)과 [QR을 함께 놓은 A3 시안](app/exhibition-poster.html)을 만들었습니다. 땅속 동물 그림자는 종을 알아보기 어렵게 흐리게 했습니다. QR은 공개 연습판을 엽니다. 현재 앱에 이미지 추적 기능은 아직 없으므로 그림을 카메라에 비춘다고 AR이 실행되지는 않습니다.
 
 최근 작업: 2026-09-26
