@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3D 친구 검토 · 상상아트</title><link rel="stylesheet" href="./style.css"><script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script></head>
+<body><header class="topbar"><a class="brand" href="./"><b>상상<span>아트</span></b><small>3D MODEL STUDIES</small></a></header>
+<main><p class="eyebrow">캐릭터 기준 그림과 첫 입체 시제품</p><h1 style="font-size:34px;letter-spacing:-1px">7번 맹꽁이 비교하기</h1><p class="lead">이 그림은 셀카 캐릭터 제작용입니다. 전시장에서 카메라가 인식할 표식과는 별개예요.</p>
+<section style="background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:15px;margin:16px 0 22px"><p class="eyebrow" style="margin-bottom:9px">캐릭터 기준 그림 · 한복 없는 7번</p><a href="./assets/mascot-reference.png" target="_blank" rel="noopener" aria-label="7번 맹꽁이 이미지 크게 보기"><img src="./assets/mascot-reference.png" alt="선택한 7번 맹꽁이 캐릭터 그림. 둥근 몸, 얼룩진 갈색 피부, 큰 눈, 동그란 입" style="display:block;width:min(100%,480px);height:auto;margin:0 auto;border-radius:16px"></a><p class="muted" style="margin:10px 0 0">그림의 발은 정확한 해부학 기준이 아닙니다. 3D에서는 앞발 4개·뒷발 5개 발가락과 뒷발의 부분 물갈퀴를 반영합니다.</p></section>
+<p class="eyebrow">아래에서 3D를 돌려보세요</p>
+<div class="small-links" style="margin-bottom:18px;flex-wrap:wrap" id="tabs"><button data-kind="cute" style="width:auto;padding:0 12px;white-space:nowrap" class="current">셀카 친구</button><button data-kind="maeng" style="width:auto;padding:0 12px;white-space:nowrap">맹꽁이</button><button data-kind="toad" style="width:auto;padding:0 12px;white-space:nowrap">두꺼비</button><button data-kind="om" style="width:auto;padding:0 12px;white-space:nowrap">옴개구리</button></div>
+<div class="stage" id="review" style="height:55dvh;min-height:340px"><span class="stage-note">손가락으로 회전 · 두 손가락으로 확대·축소</span></div>
+<p class="lead" id="caption"></p><p class="muted">맹꽁이: 앞발마다 발가락 4개 · 뒷발마다 5개 · 뒷발의 부분 물갈퀴.<br>이 모델은 직접 구성한 형태 시제품입니다. 선택한 7번 이미지의 최종 3D 재현본이나 실제 개체 스캔 자료가 아닙니다. 색·비율·발 모양 등은 생태 검수와 조형 보정이 필요합니다.</p>
+<a class="primary" id="download" download>현재 GLB 저장 ↓</a> <a class="ghost" href="./">체험으로 →</a></main>
+<footer class="site-footer">상상아트 · 기획·제작 이미숙</footer>
+<script type="module">
+import {Viewer} from './viewer.mjs';
+let viewer;const host=document.querySelector('#review');const files={cute:'mascot-seven-prototype',maeng:'maeng-observation-prototype',toad:'toad-observation-prototype',om:'om-observation-prototype'};
+const labels={cute:'7번의 둥근 몸과 큰 눈을 참고한 셀카용 시제품',maeng:'맹꽁이 · 둥근 몸과 짧은 다리',toad:'두꺼비 · 눈 뒤 귀밑샘과 피부 돌기',om:'옴개구리 · 등 위 융기선과 긴 뒷다리'};
+function show(kind){viewer?.dispose();viewer=new Viewer(host,{kind:kind==='cute'?'maeng':kind,cute:kind==='cute'});viewer.calling=kind==='cute';viewer.ready.catch(()=>{document.querySelector('#caption').textContent='3D를 불러오지 못했어요. 브라우저를 확인해 주세요.';});document.querySelector('#caption').textContent=labels[kind];document.querySelector('#download').href='./assets/models/'+files[kind]+'.glb';document.querySelectorAll('[data-kind]').forEach(b=>b.classList.toggle('current',b.dataset.kind===kind));}
+document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>show(b.dataset.kind));show('cute');window.addEventListener('pagehide',()=>viewer?.dispose());
+</script></body></html>

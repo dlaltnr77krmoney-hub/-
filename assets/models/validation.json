@@ -1,0 +1,42 @@
+[
+  {
+    "file": "maeng-observation-prototype.glb",
+    "bytes": 902028,
+    "triangles": 27500,
+    "errors": 0,
+    "warnings": 0,
+    "issues": [],
+    "foreDigits": 4,
+    "hindDigits": 5
+  },
+  {
+    "file": "toad-observation-prototype.glb",
+    "bytes": 1428484,
+    "triangles": 41660,
+    "errors": 0,
+    "warnings": 0,
+    "issues": [],
+    "foreDigits": 4,
+    "hindDigits": 5
+  },
+  {
+    "file": "om-observation-prototype.glb",
+    "bytes": 996012,
+    "triangles": 30212,
+    "errors": 0,
+    "warnings": 0,
+    "issues": [],
+    "foreDigits": 4,
+    "hindDigits": 5
+  },
+  {
+    "file": "mascot-seven-prototype.glb",
+    "bytes": 971268,
+    "triangles": 29824,
+    "errors": 0,
+    "warnings": 0,
+    "issues": [],
+    "foreDigits": 4,
+    "hindDigits": 5
+  }
+]
