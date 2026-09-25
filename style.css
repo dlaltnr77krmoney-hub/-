@@ -14,3 +14,11 @@
 .stage-note-icon{flex:none;font-size:27px;line-height:1;white-space:nowrap}
 .stage-note-text{max-width:225px;white-space:nowrap}
 @media(max-width:800px){.stage-note{font-size:16px;padding:10px 12px;gap:8px}.stage-note-icon{font-size:26px}.stage-note-text{max-width:195px}}
+
+/* Put each animal's three main traits directly below its name. */
+.study-keyfacts{margin:0 0 19px;padding:14px;border:1px solid #b6cda8;border-radius:18px;background:#eaf1df}
+.study-keyfacts strong{display:block;color:#2b5d47;font-size:14px;font-weight:800}
+.study-keyfacts .facts{margin:10px 0 0;gap:8px}
+.study-keyfacts .facts span{padding:10px 14px;border:2px solid #709764;border-radius:999px;background:#fffefa;color:#183f3c;font-size:16px;font-weight:800;line-height:1.2}
+.study-copy .latin{margin-bottom:12px}
+@media(max-width:800px){.study-keyfacts{margin-bottom:16px;padding:12px}.study-keyfacts .facts span{padding:9px 11px;font-size:16px}}
