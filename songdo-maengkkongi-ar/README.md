@@ -78,6 +78,6 @@ node tools/build-crab.mjs "/path/to/original-crab.glb"
 
 [자료 출처·라이선스](docs/SOURCES.md) · [기획 기록](docs/PROJECT_NOTES.md)
 
-[현장 AR 인식 대상 제안](docs/AR_TARGET_PLAN.md): 송도솔밭을 체험 장소로 삼고, 일반 산책로의 별도 안내 표식을 인식 대상으로 쓰는 안. 실제 표식·이미지 추적 기능은 아직 준비 전입니다.
+[전시 AR 인식 대상 제안](docs/AR_TARGET_PLAN.md): 사용자가 표시한 전시 구역에 무광 인쇄 표식을 두는 안입니다. [표식 시안](app/assets/exhibition-marker-draft.svg)에는 퀴즈 정답인 맹꽁이를 그리지 않았습니다. 현재 앱에 이미지 추적 기능은 아직 없으므로 시안만 인쇄해도 AR이 실행되지는 않습니다.
 
 최근 작업: 2026-09-26
