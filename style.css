@@ -8,3 +8,9 @@
 
 .hero-mystery{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(36px,4vw,56px);font-weight:800;letter-spacing:-3px;line-height:1.3;color:#477067;transform:rotate(-5deg)}.hero-mystery span{color:#98a758;font-size:1.4em}
 @media(max-width:800px){.hero-mystery{font-size:38px}}
+
+/* Keep the rotation hint legible on a phone without blocking the 3D gesture. */
+.stage-note{left:50%;right:auto;bottom:14px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 14px;border:1px solid #c9d8c7;border-radius:16px;background:#fffdf1f2;box-shadow:0 5px 18px #183f3c22;color:var(--ink);font-size:17px;font-weight:800;line-height:1.35;text-align:left}
+.stage-note-icon{flex:none;font-size:27px;line-height:1;white-space:nowrap}
+.stage-note-text{max-width:225px;white-space:nowrap}
+@media(max-width:800px){.stage-note{font-size:16px;padding:10px 12px;gap:8px}.stage-note-icon{font-size:26px}.stage-note-text{max-width:195px}}

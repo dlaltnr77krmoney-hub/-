@@ -15,7 +15,7 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 let toastTimer;function toast(s){$('#toast').textContent=s;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4500);}
 function clear(){viewers.forEach(v=>v.dispose());viewers=[];selfie?.dispose();selfie=null;closeSound();$('#pause-cover')?.remove();if(photoURL){URL.revokeObjectURL(photoURL);photoURL=null;}}
 function page(html,name){clear();screen=name;main.innerHTML=html;window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});}
-function stage(id,{tag='',note='손가락으로 돌리고 확대해 보세요'}={}){return `<div class="stage" id="${id}" role="img" aria-label="회전하고 확대할 수 있는 3D 동물"><div class="stage-loading">작은 친구를 불러오는 중…</div><span class="stage-tag">${tag}</span>${note?`<span class="stage-note">${note}</span>`:''}</div>`;}
+function stage(id,{tag='',note='돌리고 확대해 보세요'}={}){return `<div class="stage" id="${id}" role="img" aria-label="회전하고 확대할 수 있는 3D 동물"><div class="stage-loading">작은 친구를 불러오는 중…</div><span class="stage-tag">${tag}</span>${note?`<span class="stage-note"><span class="stage-note-icon" aria-hidden="true">👆 ↔</span><span class="stage-note-text">${note}</span></span>`:''}</div>`;}
 function view(id,opts={}){const viewer=new Viewer(document.getElementById(id),opts);viewer.reduced=prefs.reduced;viewers.push(viewer);return viewer.ready.then(()=>true).catch(()=>{toast('3D 표시를 확인해 주세요. WebGL을 지원하는 브라우저가 필요해요.');return false;});}
 let audioContext;
 function sfx(type){if(!prefs.sound||$('#sound-dialog').open)return;try{audioContext??=new AudioContext();audioContext.resume();const t=audioContext.currentTime;
