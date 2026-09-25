@@ -29,4 +29,6 @@
 - Pose Landmarker Lite: [Google 공식 모델](https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task), [공식 사용 안내](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker/web_js).
 - 영상 처리는 기기 내에서 수행합니다. 키·계정·유료 API 없이 로컬 시제품을 실행할 수 있습니다. 공개 운영의 서버 비용까지 무료임을 보장하지는 않습니다.
 - `mascot-reference.png`: 선택한 7번을 참고해 이번 제작 과정에서 생성한 이미지. 최종 3D는 이 그림의 몸·표정을 참고하되 발 구조를 보정합니다.
+- `songdo-pine-underground-v2.png`: 사용자의 전시 아이디어를 바탕으로 생성한 창작 삽화. 실제 송도솔밭 사진이나 현장 지도 자료로 쓰지 않습니다.
+- `experience-qr-pending.svg`: 예정 GitHub Pages 주소를 인코딩한 QR 시안. 공개 배포 설정 전에는 주소가 열리지 않습니다. QR 생성에는 Segno 1.6.6을 사용했습니다.
 - 게 GLB: 사용자가 제공한 Meshy 원본을 바탕으로 길이를 변형한 파일. 제3자의 원본을 추가 수집하지 않았습니다.
