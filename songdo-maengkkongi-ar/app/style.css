@@ -22,3 +22,15 @@
 .study-keyfacts .facts span{padding:10px 14px;border:2px solid #709764;border-radius:999px;background:#fffefa;color:#183f3c;font-size:16px;font-weight:800;line-height:1.2}
 .study-copy .latin{margin-bottom:12px}
 @media(max-width:800px){.study-keyfacts{margin-bottom:16px;padding:12px}.study-keyfacts .facts span{padding:9px 11px;font-size:16px}}
+
+/* Listen beside the animal; keep the playback controls below its 3D viewer. */
+.study-stage-wrap{position:relative;min-width:0}
+.stage-sound{position:absolute;z-index:3;top:16px;right:16px;min-height:48px;padding:10px 16px;border:1px solid #ffffffa8;border-radius:14px;background:#183f3c;color:#fff;box-shadow:0 5px 16px #183f3c40;font-size:16px;font-weight:800}
+.stage-sound:hover{background:#28645a}
+.sound-panel{margin-top:12px;padding:14px;border:1px solid #bdd0bb;border-radius:18px;background:#fffefa;box-shadow:0 8px 26px #183f3c16}
+.sound-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.sound-panel-head strong{font-size:16px}
+.sound-panel-head button{min-height:38px;padding:7px 10px;border-radius:9px;background:#e8eee5;color:var(--ink);font-size:13px;font-weight:700}
+.sound-panel #sound-player p{margin:8px 0 0;font-size:12px}
+.sound-panel #sound-credit{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.6}
+@media(max-width:800px){.stage-sound{top:14px;right:14px;font-size:16px}.study-copy .study-actions{display:block}.study-copy .study-actions .primary{width:100%}}
