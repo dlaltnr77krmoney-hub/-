@@ -13,7 +13,7 @@
 
 ## 울음소리
 
-- 맹꽁이: JICA / (재)전주정보문화산업진흥원, [「변산반도 곰소 맹꽁이 울음」 공유마당 원본](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?menuNo=200020&wrtSn=13371637). 원본 페이지의 이용조건은 **공공누리 1유형(출처표시)**입니다. 배포 파일 `app/assets/maeng-call-kogl1.mp3`는 [공식 재생 파일](https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileMediaPlay.do?wrtSn=13371637&fileSn=1)을 변경 없이 저장한 것입니다. 관찰 화면과 마지막 소리 문제에서 사용합니다.
+- 맹꽁이: JICA / (재)전주정보문화산업진흥원, [「변산반도 곰소 맹꽁이 울음」 공유마당 원본](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?menuNo=200020&wrtSn=13371637). 원본 페이지의 이용조건은 **공공누리 1유형(출처표시)**입니다. 배포 파일 `app/assets/maeng-call-clip-kogl1.mp3`는 [공식 재생 파일](https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileMediaPlay.do?wrtSn=13371637&fileSn=1)의 18~29초 구간을 발췌해 저음·고음의 배경 소음을 줄이고 음량을 고르게 조정한 11초 버전입니다. 음높이와 재생 속도는 바꾸지 않았습니다. 관찰 화면과 마지막 소리 문제에서 사용합니다.
 - 옴개구리: [Vimeo 40431369](https://vimeo.com/40431369)
 
 옴개구리는 국립환경과학원 도감 수록 소리를 소개하는 원본 Vimeo 플레이어를 이용자 클릭 후 연결합니다. 해당 음원 파일은 추출해 배포하지 않습니다. 외부 네트워크 상태나 원본 공개 상태에 따라 재생이 달라질 수 있습니다. 사진·영상은 이 플레이어에 전달하지 않습니다.

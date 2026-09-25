@@ -2,7 +2,7 @@
 export const PRACTICE_QUESTIONS = [
   {
     "id": "find",
-    "title": "동그란 주인공을 찾아주세요!",
+    "title": "맹꽁이를 찾아주세요",
     "hint": "몸통과 다리를 함께 살펴봐요.",
     "models": [
       "maeng",
