@@ -70,14 +70,15 @@ export const PRACTICE_QUESTIONS = [
   },
   {
     "id": "final",
-    "title": "다른 각도에서도 맹꽁이를 찾을 수 있나요?",
-    "hint": "마지막 관찰! 천천히 돌려보세요.",
-    "models": [
-      "maeng",
-      "toad",
-      "om"
+    "title": "소리만 듣고 누구인지 맞혀 보세요!",
+    "hint": "마지막 고난도 문제예요. 다시 들어도 좋아요.",
+    "sound": true,
+    "options": [
+      {"id":"maeng","text":"맹꽁이"},
+      {"id":"toad","text":"두꺼비"},
+      {"id":"om","text":"옴개구리"}
     ],
     "answer": "maeng",
-    "explain": "찾았어요! 둥근 몸, 작은 머리, 짧은 다리의 맹꽁이예요. 이제 귀여운 맹꽁이와 사진을 남겨요."
+    "explain": "정답은 맹꽁이예요. 이번에는 모습이 아닌 실제 울음소리로 찾아봤어요. 이제 귀여운 맹꽁이와 사진을 남겨요."
   }
 ];

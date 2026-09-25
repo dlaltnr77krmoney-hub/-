@@ -13,10 +13,10 @@
 
 ## 울음소리
 
-- 맹꽁이: [Vimeo 40431293](https://vimeo.com/40431293)
+- 맹꽁이: JICA / (재)전주정보문화산업진흥원, [「변산반도 곰소 맹꽁이 울음」 공유마당 원본](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?menuNo=200020&wrtSn=13371637). 원본 페이지의 이용조건은 **공공누리 1유형(출처표시)**입니다. 배포 파일 `app/assets/maeng-call-kogl1.mp3`는 [공식 재생 파일](https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileMediaPlay.do?wrtSn=13371637&fileSn=1)을 변경 없이 저장한 것입니다. 관찰 화면과 마지막 소리 문제에서 사용합니다.
 - 옴개구리: [Vimeo 40431369](https://vimeo.com/40431369)
 
-국립환경과학원 도감 수록 소리를 소개하는 원본 플레이어를 이용자 클릭 후 연결합니다. 음원 파일을 추출해 배포하지 않습니다. 해당 서비스를 이용할 때 외부 Vimeo에 접속되며 네트워크 상태나 원본 공개 상태에 따라 재생이 달라질 수 있습니다. 사진·영상은 이 플레이어에 전달하지 않습니다.
+옴개구리는 국립환경과학원 도감 수록 소리를 소개하는 원본 Vimeo 플레이어를 이용자 클릭 후 연결합니다. 해당 음원 파일은 추출해 배포하지 않습니다. 외부 네트워크 상태나 원본 공개 상태에 따라 재생이 달라질 수 있습니다. 사진·영상은 이 플레이어에 전달하지 않습니다.
 
 - 두꺼비: 김용배, 「두꺼비」, [공유마당 원본](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?menuNo=200020&wrtSn=13253215), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ko).
 - 배포 파일 `app/assets/toad-call.wav`는 원본을 변경하지 않았습니다. 제공자가 두꺼비로 분류한 음원이며 종별 소리의 적합성은 교육 공개 전 추가 검수합니다.

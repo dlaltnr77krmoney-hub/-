@@ -21,6 +21,9 @@ class Flow(unittest.TestCase):
   self.assertEqual(self.request('rankings',{'nickname':'테스트','consent':True})[0],409)
   for index,q in enumerate(s.QUESTIONS):
    code,public=self.request('question');self.assertEqual(code,200);self.assertNotIn('answer',public);self.assertNotIn('explain',public)
+   if index==4:
+    self.assertTrue(public['sound']);self.assertFalse(public['visual'])
+    self.assertNotIn('model',public);self.assertEqual({o['id'] for o in public['options']},{'maeng','toad','om'})
    self.assertEqual(self.request('answer',{'index':index,'answer':q['answer']})[0],409)
    time.sleep(.035) # Waiting for 3D must not count.
    self.assertEqual(self.request('ready',{'index':index})[0],200)
