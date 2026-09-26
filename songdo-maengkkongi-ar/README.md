@@ -58,6 +58,7 @@ python server/server.py
 - `app/`만 정적 호스팅하면 **순위 없는 연습 모드**를 사용할 수 있습니다. GitHub Pages만으로 공통 SQLite 순위 서버는 실행되지 않습니다.
 - 공통 순위 공개 운영에는 지속 저장소와 HTTPS가 있는 서버, 백업·운영 점검이 필요합니다. 현재 구현은 체험용이며 경품 경쟁을 위한 부정 참여 방지 시스템은 아닙니다.
 - [공개 체험판](https://dlaltnr77krmoney-hub.github.io/-/)은 GitHub Pages에서 로그인 없이 열립니다. 이 주소의 체험은 공통 순위가 없는 연습 모드입니다. [A3 전시 포스터](https://dlaltnr77krmoney-hub.github.io/-/exhibition-poster.html)의 QR도 이 주소로 연결됩니다.
+- 강사님께 정적 서버 배포 파일을 전달할 때는 `python tools/package_static_delivery.py`로 `releases/` ZIP을 만듭니다. ZIP의 `web/` 폴더가 웹사이트 파일이며, 압축본 안의 안내문에 HTTPS·QR·순위 조건을 적었습니다.
 
 ## 검증과 남은 작업
 
