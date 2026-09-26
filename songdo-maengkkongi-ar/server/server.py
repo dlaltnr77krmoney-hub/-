@@ -14,8 +14,7 @@ QUESTIONS = [
  {'id':'find','title':'맹꽁이를 찾아주세요','hint':'몸통과 다리를 함께 살펴봐요.','models':['maeng','toad','om'],'answer':'maeng','explain':'맹꽁이는 둥근 몸통에 머리가 작고 다리가 짧아요. 색깔 하나보다 여러 특징을 함께 보세요.'},
  {'id':'shape','title':'맹꽁이를 알아보는 단서는?','hint':'방금 관찰한 모습을 떠올려요.','model':'maeng','options':[{'id':'round','text':'둥근 몸통과 짧은 다리'},{'id':'long','text':'길쭉한 몸통과 긴 뒷다리'},{'id':'disc','text':'발끝의 커다란 흡반'}],'answer':'round','explain':'둥근 몸통과 작은 머리, 짧은 다리를 함께 관찰해요. 앞발은 4개, 뒷발은 5개의 발가락이 있고 뒷발에 부분적인 물갈퀴가 있어요.'},
  {'id':'toad','title':'눈 뒤 귀밑샘이 도드라진 친구는?','hint':'눈 뒤쪽을 돌려서 살펴봐요.','models':['maeng','toad','om'],'answer':'toad','explain':'두꺼비는 눈 뒤에 타원형 귀밑샘이 있고 몸에 크고 작은 돌기가 있어요. 옴개구리는 등과 다리의 짧은 융기선을 함께 살펴봐요.'},
- {'id':'crab','title':'위험할 때 자신의 다리를 떼는 게의 행동을 뭐라고 할까요?','hint':'게의 방어 행동에 붙은 이름을 골라보세요.','model':'crab','options':[{'id':'amputation','text':'절단'},{'id':'cutting','text':'절삭'},{'id':'autotomy','text':'자절'}],'answer':'autotomy','explain':'정답은 자절이에요. 일부 게는 위험할 때 스스로 다리를 떼어내고 피하기도 해요. 다시 자라는 데에는 탈피와 시간이 필요하니 실제 게의 다리를 잡아당기지 않아요.'},
- {'id':'final','title':'맹꽁이 울음은 어떻게 들리나요?','hint':'처음 사용했던 원본 소리를 듣고 답해 보세요.','sound':True,'options':[{'id':'two-tones','text':'맹과 꽁이 서로 다른 높낮이로 들려요'},{'id':'one-tone','text':'한 가지 높낮이로만 들려요'},{'id':'silent','text':'소리를 내지 않아요'}],'answer':'two-tones','explain':'서로 다른 높낮이의 ‘맹’과 ‘꽁’이 함께 들릴 수 있어요. 이제 귀여운 맹꽁이와 사진을 남겨요.'}
+ {'id':'crab','title':'위험할 때 자신의 다리를 떼는 게의 행동을 뭐라고 할까요?','hint':'게의 방어 행동에 붙은 이름을 골라보세요.','model':'crab','options':[{'id':'amputation','text':'절단'},{'id':'cutting','text':'절삭'},{'id':'autotomy','text':'자절'}],'answer':'autotomy','explain':'정답은 자절이에요. 일부 게는 위험할 때 스스로 다리를 떼어내고 피하기도 해요. 다시 자라는 데에는 탈피와 시간이 필요하니 실제 게의 다리를 잡아당기지 않아요.'}
 ]
 
 def today(): return datetime.now(KST).date().isoformat()
@@ -70,10 +69,10 @@ class Handler(SimpleHTTPRequestHandler):
         return json.loads(row['payload'])
     def save(self,db,s):db.execute('UPDATE sessions SET payload=? WHERE token=?',(json.dumps(s),self.token()))
     def question(self,s):
-        if s['index']>=5:return {'complete':True,'score':s['score'],'duration':s['duration']}
+        if s['index']>=len(QUESTIONS):return {'complete':True,'score':s['score'],'duration':s['duration']}
         q=QUESTIONS[s['index']];opts=s['orders'][s['index']]
         return {k:q[k] for k in ['id','title','hint','model','sound'] if k in q}|{'index':s['index'],'options':opts,'visual':bool(q.get('models')),'state':s['state'],'complete':False}
-    def result(self,s):return {'complete':s['index']==5,'score':s['score'],'duration':s['duration'],'history':s['history']}
+    def result(self,s):return {'complete':s['index']==len(QUESTIONS),'score':s['score'],'duration':s['duration'],'history':s['history']}
     def do_GET(self):
         path=urlsplit(self.path).path
         if not path.startswith('/api/'):
@@ -119,7 +118,7 @@ class Handler(SimpleHTTPRequestHandler):
                     return self.json({'ok':True},cookie=token)
                 s=self.load(db)
                 if path=='/api/rankings':
-                    if s['index']!=5:raise Invalid('다섯 문제를 완료한 뒤 기록할 수 있어요.',409)
+                    if s['index']!=len(QUESTIONS):raise Invalid('네 문제를 완료한 뒤 기록할 수 있어요.',409)
                     nick=data.get('nickname','')
                     if not isinstance(nick,str) or not re.fullmatch(r'[가-힣A-Za-z0-9 ]{2,12}',nick):raise Invalid('별명은 한글·영문·숫자 2~12자로 적어주세요.')
                     if data.get('consent') is not True:raise Invalid('별명과 기록 공개에 동의해 주세요.')
@@ -128,7 +127,7 @@ class Handler(SimpleHTTPRequestHandler):
                     return self.json({'ok':True})
                 if path=='/api/delete-record':
                     db.execute('DELETE FROM records WHERE token=?',(self.token(),));return self.json({'ok':True})
-                if s['index']>=5:raise Invalid('이미 완료한 체험입니다.',409)
+                if s['index']>=len(QUESTIONS):raise Invalid('이미 완료한 체험입니다.',409)
                 if data.get('index')!=s['index']:raise Invalid('문제 순서가 바뀌었어요. 다시 불러와 주세요.',409)
                 if path=='/api/ready':
                     if s['state']!='waiting':raise Invalid('이미 시작한 문제입니다.',409)
@@ -146,7 +145,7 @@ class Handler(SimpleHTTPRequestHandler):
                     correct=answer==q['answer'];s['score']+=int(correct);s['duration']+=elapsed
                     feedback={'correct':correct,'answer':q['answer'],'explain':q['explain'],'elapsed':elapsed,'id':q['id']}
                     s['history'].append(feedback);s['index']+=1;s['state']='waiting';s['elapsed']=0;s['started']=None
-                    self.save(db,s);return self.json(feedback|{'score':s['score'],'complete':s['index']==5})
+                    self.save(db,s);return self.json(feedback|{'score':s['score'],'complete':s['index']==len(QUESTIONS)})
                 else:raise Invalid('찾을 수 없는 요청입니다.',404)
                 self.save(db,s);self.json({'ok':True})
         except Invalid as e:self.json({'error':e.message},e.status)

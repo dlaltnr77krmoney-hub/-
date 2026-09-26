@@ -21,9 +21,9 @@ class Flow(unittest.TestCase):
   self.assertEqual(self.request('rankings',{'nickname':'테스트','consent':True})[0],409)
   for index,q in enumerate(s.QUESTIONS):
    code,public=self.request('question');self.assertEqual(code,200);self.assertNotIn('answer',public);self.assertNotIn('explain',public)
-   if index==4:
-    self.assertTrue(public['sound']);self.assertFalse(public['visual'])
-    self.assertNotIn('model',public);self.assertEqual({o['id'] for o in public['options']},{'two-tones','one-tone','silent'})
+   if index==len(s.QUESTIONS)-1:
+    self.assertEqual(public['id'],'crab');self.assertFalse(public['visual'])
+    self.assertEqual({o['id'] for o in public['options']},{'amputation','cutting','autotomy'})
    self.assertEqual(self.request('answer',{'index':index,'answer':q['answer']})[0],409)
    time.sleep(.035) # Waiting for 3D must not count.
    self.assertEqual(self.request('ready',{'index':index})[0],200)
@@ -33,18 +33,18 @@ class Flow(unittest.TestCase):
    self.assertEqual(self.request('resume',{'index':index})[0],200)
    code,result=self.request('answer',{'index':index,'answer':q['answer']});self.assertEqual(code,200);self.assertTrue(result['correct']);self.assertLess(result['elapsed'],75)
    self.assertEqual(self.request('answer',{'index':index,'answer':q['answer']})[0],409)
-  self.assertEqual(self.request('result')[1]['score'],5)
+  self.assertEqual(self.request('result')[1]['score'],len(s.QUESTIONS))
   self.assertEqual(self.request('rankings',{'nickname':'관찰친구','consent':False})[0],400)
   self.assertEqual(self.request('rankings',{'nickname':'<script>','consent':True})[0],400)
   self.assertEqual(self.request('rankings',{'nickname':'관찰친구','consent':True})[0],200)
   self.assertTrue(self.request('result')[1]['recordSaved'])
   self.assertEqual(self.request('rankings',{'nickname':'관찰친구','consent':True})[0],409)
-  other=urllib.request.urlopen(self.url+'/api/rankings');self.assertEqual(json.load(other)['rows'][0]['score'],5)
+  other=urllib.request.urlopen(self.url+'/api/rankings');self.assertEqual(json.load(other)['rows'][0]['score'],len(s.QUESTIONS))
   self.assertEqual(self.request('delete-record',{})[0],200);self.assertEqual(self.request('rankings')[1]['rows'],[])
   self.assertFalse(self.request('result')[1]['recordSaved'])
  def test_wrong_answers_validation_origin_and_private_paths(self):
   self.request('session',{})
-  self.assertEqual(self.request('ready',{'index':4})[0],409)
+  self.assertEqual(self.request('ready',{'index':len(s.QUESTIONS)-1})[0],409)
   self.assertEqual(self.request('ready',{'index':0},origin='https://example.com')[0],403)
   self.request('ready',{'index':0})
   self.assertEqual(self.request('answer',{'index':0,'answer':'invalid'})[0],400)
