@@ -56,7 +56,7 @@ export class Selfie{
   else{ctx.save();ctx.translate(w,0);ctx.scale(-1,1);ctx.drawImage(source,(w-vw*scale)/2,(h-vh*scale)/2,vw*scale,vh*scale);ctx.restore();}
   this.renderer.render(this.scene,this.camera);ctx.drawImage(this.renderer.domElement,0,0,w,h);
   ctx.fillStyle='#183f3c';ctx.fillRect(0,h,w,140);ctx.fillStyle='#dff08a';ctx.font='bold 27px sans-serif';ctx.fillText('송도에서 만난 작은 친구',28,h+48);
-  ctx.fillStyle='#fffefa';ctx.font='18px sans-serif';ctx.fillText('상상아트 | 기획·제작 이미숙',28,h+86);ctx.fillStyle='#c3d4c9';ctx.font='14px sans-serif';ctx.fillText(new Date().toLocaleDateString('ko-KR'),28,h+116);
+  ctx.fillStyle='#fffefa';ctx.font='18px sans-serif';ctx.fillText('기획·제작 상상아트',28,h+86);ctx.fillStyle='#c3d4c9';ctx.font='14px sans-serif';ctx.fillText(new Date().toLocaleDateString('ko-KR'),28,h+116);
   return await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('사진 저장에 실패했어요.')),'image/png'));
  }
  stopCamera(){if(!this.photoMode)this.active=false;this.stream?.getTracks().forEach(t=>t.stop());this.stream=null;this.video.srcObject=null;}

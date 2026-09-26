@@ -19,7 +19,7 @@ def main():
         raise RuntimeError("app/ 폴더에 배포할 파일이 없습니다.")
 
     guide = """송도 맹꽁이 AR · 강사님께 드리는 웹배포 안내
-상상아트 | 기획·제작 이미숙
+기획·제작 상상아트
 
 1. web 폴더 안의 파일과 하위 폴더를 모두 공개 웹 디렉터리에 올려 주세요.
    index.html, app.mjs, assets, vendor 등이 같은 상대 위치를 유지해야 합니다.

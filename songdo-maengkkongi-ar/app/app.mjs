@@ -1,5 +1,5 @@
 import {Viewer} from './viewer.mjs';
-import {Selfie} from './selfie.mjs?v=20260926-palm-four';
+import {Selfie} from './selfie.mjs?v=20260927-brand';
 import {PRACTICE_QUESTIONS} from './practice.mjs?v=20260926-palm-four';
 const $=s=>document.querySelector(s),main=$('#main');
 const QUIZ_COUNT=PRACTICE_QUESTIONS.length;

@@ -60,7 +60,7 @@ function addTangents(){for(const m of root.listMeshes())for(const p of m.listPri
 addTangents();
 let triangles=0,vertices=0;
 for(const m of root.listMeshes())for(const p of m.listPrimitives()){triangles+=p.getIndices().getCount()/3;vertices+=p.getAttribute('POSITION').getCount();}
-root.setExtras({title:'상상아트 긴 다리 보석 게',creator:'기획·제작 이미숙 · 상상아트',sourceFile:path.basename(src),notes:'Walking-leg length redesign; original ornament textures preserved. Static mesh; not rigged. Pedestal omitted for AR placement.'});
+root.setExtras({title:'상상아트 긴 다리 보석 게',creator:'기획·제작 상상아트',sourceFile:path.basename(src),notes:'Walking-leg length redesign; original ornament textures preserved. Static mesh; not rigged. Pedestal omitted for AR placement.'});
 const output='./sangsang-art-longleg-crab.glb';
 await io.write(output,doc);
 const bytes=await fs.readFile(output);

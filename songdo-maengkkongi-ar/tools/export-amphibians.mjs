@@ -32,7 +32,7 @@ for(const [kind,cute] of [['maeng',false],['toad',false],['om',false],['maeng',t
   const sample=doc.createAnimationSampler().setInput(acc('SCALAR',new Float32Array([0,.35,.65,.9,1.2,1.5,2]))).setOutput(acc('VEC3',new Float32Array([.01,.01,.01,1.4,1.4,1.4,.7,.7,.7,1.4,1.4,1.4,.7,.7,.7,.01,.01,.01,.01,.01,.01]))).setInterpolation('LINEAR');
   call.addSampler(sample).addChannel(doc.createAnimationChannel().setTargetNode(node).setTargetPath('scale').setSampler(sample));
  }
- doc.getRoot().setExtras({...group.userData,creator:'상상아트 | 기획·제작 이미숙',notes:'Procedural proportion study. Not a scan or exact conversion of the approved image. Requires biological and visual review. Four front digits, five rear digits, partial rear webbing.'});
+ doc.getRoot().setExtras({...group.userData,creator:'기획·제작 상상아트',notes:'Procedural proportion study. Not a scan or exact conversion of the approved image. Requires biological and visual review. Four front digits, five rear digits, partial rear webbing.'});
  const name=cute?'mascot-seven-prototype.glb':`${kind}-observation-prototype.glb`;await new NodeIO().write(path.join(out,name),doc);
  const bytes=await fs.readFile(path.join(out,name));const report=await validator.validateBytes(new Uint8Array(bytes),{maxIssues:20});
  reports.push({file:name,bytes:bytes.length,triangles,errors:report.issues.numErrors,warnings:report.issues.numWarnings,issues:report.issues.messages,foreDigits:4,hindDigits:5});
