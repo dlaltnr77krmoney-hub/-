@@ -67,18 +67,5 @@ export const PRACTICE_QUESTIONS = [
     ],
     "answer": "autotomy",
     "explain": "정답은 자절이에요. 일부 게는 위험할 때 스스로 다리를 떼어내고 피하기도 해요. 다시 자라는 데에는 탈피와 시간이 필요하니 실제 게의 다리를 잡아당기지 않아요."
-  },
-  {
-    "id": "final",
-    "title": "맹꽁이 울음은 어떻게 들리나요?",
-    "hint": "처음 사용했던 원본 소리를 듣고 답해 보세요.",
-    "sound": true,
-    "options": [
-      {"id":"two-tones","text":"맹과 꽁이 서로 다른 높낮이로 들려요"},
-      {"id":"one-tone","text":"한 가지 높낮이로만 들려요"},
-      {"id":"silent","text":"소리를 내지 않아요"}
-    ],
-    "answer": "two-tones",
-    "explain": "서로 다른 높낮이의 ‘맹’과 ‘꽁’이 함께 들릴 수 있어요. 이제 귀여운 맹꽁이와 사진을 남겨요."
   }
 ];
