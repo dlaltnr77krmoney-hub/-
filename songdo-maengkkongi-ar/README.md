@@ -77,8 +77,8 @@ node tools/build-crab.mjs "/path/to/original-crab.glb"
 
 마지막 두 명령은 모델 파일을 갱신합니다. 원본 게 GLB와 개인 셀카는 저장소에 포함하지 않습니다. `tools/node_modules`는 모델 제작 시에만 필요하며 앱 실행에는 필요하지 않습니다.
 
-[자료 출처·라이선스](docs/SOURCES.md) · [기획 기록](docs/PROJECT_NOTES.md)
+[자료 출처·라이선스](docs/SOURCES.md) · [기획 기록](docs/PROJECT_NOTES.md) · [다음 수정 목록](docs/NEXT_CHANGES.md)
 
 [전시 AR 인식 대상 제안](docs/AR_TARGET_PLAN.md): 사용자가 표시한 전시 구역에 무광 인쇄 표식을 두는 안입니다. [새 솔밭 단면 그림](app/assets/songdo-pine-underground-v2.png)과 [QR을 함께 놓은 A3 시안](app/exhibition-poster.html)을 만들었습니다. 땅속 동물 그림자는 종을 알아보기 어렵게 흐리게 했습니다. QR은 공개 연습판을 엽니다. 현재 앱에 이미지 추적 기능은 아직 없으므로 그림을 카메라에 비춘다고 AR이 실행되지는 않습니다.
 
-최근 작업: 2026-09-26
+최근 작업: 2026-09-27
